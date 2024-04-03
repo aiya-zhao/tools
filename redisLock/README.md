@@ -1,4 +1,7 @@
-<?php
+## 分布式锁简单封装
+
+### 测试示例
+~~~ php
 // --------------【测试示例】--------------
 $redis = 'redis';  // 获取redis,根据自己项目中获取方法直接获取
 
@@ -15,11 +18,14 @@ if ($lock->acquireLock()){
 }else{
     return '获取锁失败';
 }
+~~~
 
-
-
+### 使用示例
+~~~ php
 // --------------【使用示例】--------------
-$redis = 'redis';  // 获取redis,根据自己项目中获取方法直接获取
+$redis = new \Redis();
+$redis->connect('127.0.0.1', 6379);
+$redis->auth('password');
 
 $lock_key = 'lock_key';   // 分布式锁的键值，可以根据不同业务逻辑，设置不同键值【最好加上用户的身份标识，避免不同用户请求堵在一起】
 $lock = new RedisLock($redis, $lock_key);    // 获取分布式锁，可以封装到帮助函数中
@@ -37,3 +43,4 @@ if ($lock->acquireLock()) {
 } else {  
     // 获取锁失败的处理...  
 }
+~~~
